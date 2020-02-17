@@ -6,13 +6,15 @@
 /*   By: jgiron <jgiron@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/15 15:39:03 by jgiron            #+#    #+#             */
-/*   Updated: 2020/02/12 19:22:13 by jgiron           ###   ########.fr       */
+/*   Updated: 2020/02/16 21:12:04 by jgiron           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-//error protection OK :D
+/*
+** error protection OK :D
+*/
 
 static void	ft_obj_tr(t_all_info all_info, t_mrt_list *result, char **line)
 {
@@ -29,51 +31,50 @@ static void	ft_obj_tr(t_all_info all_info, t_mrt_list *result, char **line)
 		(result->polygon->y + result->polygon[1].y + result->polygon[2].y) / 3,
 		(result->polygon->z + result->polygon[1].z + result->polygon[2].z) / 3
 	};
-	result->pos = result->polygon[0];
 }
 
-char 	ft_find_id(char * line)
+char		ft_find_id(char *line)
 {
 	if (ft_strstart(line, "tr"))
-		return(TRIANGLE);
+		return (TRIANGLE);
 	if (ft_strstart(line, "pl"))
-		return(PLANE);
+		return (PLANE);
 	if (ft_strstart(line, "sp"))
-		return(SPHERE);
+		return (SPHERE);
 	if (ft_strstart(line, "sq"))
-		return(SQUARE);
+		return (SQUARE);
 	if (ft_strstart(line, "cy"))
-		return(CYLINDER);
+		return (CYLINDER);
 	if (ft_strstart(line, "di"))
-		return(DISK);
+		return (DISK);
 	return (-1);
 }
 
-int		ft_obj_init(t_all_info all_info, char *line)
+int			ft_obj_init(t_all_info all_info, char *line)
 {
-	t_mrt_list	*result;
+	t_mrt_list	*res;
 
 	while (all_info.objects->next)
 		all_info.objects = all_info.objects->next;
-	if (!(result = malloc(sizeof(t_mrt_list))))
+	if (!(res = malloc(sizeof(t_mrt_list))))
 		ft_quit(all_info, ERR_SYS);
-	all_info.objects->next = result;
-	*result = (t_mrt_list){};
-	result->id = ft_find_id(line);
+	all_info.objects->next = res;
+	*res = (t_mrt_list){ft_find_id(line),
+						{0, 0, 0}, {0, 0, 0}, 0, {0, 0, 0}, 0, 0, 0, 0};
 	line += 2;
-	if (result->id == TRIANGLE)
-		ft_obj_tr(all_info, result, &line);
+	if (res->id == TRIANGLE)
+		ft_obj_tr(all_info, res, &line);
 	else
 	{
-		if (-1 == ft_atocoord(&(result->pos), &line))
+		if (-1 == ft_atocoord(&(res->pos), &line))
 			ft_quit(all_info, FILE_ERR);
-		if (result->id != SPHERE)
-			if (-1 == ft_atocoord(&(result->vect), &line))
+		if (res->id != SPHERE)
+			if (-1 == ft_atocoord(&(res->vect), &line))
 				ft_quit(all_info, FILE_ERR);
-		if (result->id == SPHERE || result->id == CYLINDER || result->id == DISK)
-			result->radius = ft_atof(&line) / 2;
-		if (result->id == SQUARE || result->id == CYLINDER)
-			result->length = ft_atof(&line) / 2;
+		if (res->id == SPHERE || res->id == CYLINDER || res->id == DISK)
+			res->radius = ft_atof(&line) / 2;
+		if (res->id == SQUARE || res->id == CYLINDER)
+			res->length = ft_atof(&line) / 2;
 	}
-	return (ft_atocolor(&(result->color), &line));
+	return (ft_atocolor(&(res->color), &line));
 }

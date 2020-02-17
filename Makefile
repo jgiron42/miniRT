@@ -32,7 +32,10 @@ SRCS		=	main.c					\
 			ft_keyboard_interactions.c	\
 			ft_zoom.c					\
 			ft_save_image.c				\
-			more_vector_manipulation.c
+			more_vector_manipulation.c  \
+			intersections2.c            \
+			ft_keyboard_interactions2.c \
+			ft_find_pathname.c
 
 OBJS		=	$(SRCS:.c=.o)
 
@@ -42,8 +45,7 @@ FRAMEWORKS	=	-framework OpenGL -framework AppKit
 
 LIBS		=	-lz -Lminilibx -lmlx -Llibft -lft
 
-all		:
-			@make $(NAME)
+all		: $(NAME)
 
 $(NAME)		:	$(OBJS) make_libs
 			gcc -o $(NAME) $(LIBS) $(OBJS) $(FRAMEWORKS)
@@ -52,16 +54,17 @@ make_libs	:
 			@make -C libft
 			@make -C minilibx
 
-bonus		:
-			@make $(NAME)
+bonus		: $(NAME)
 
 clean		:
 			rm -f $(OBJS)
 			@make -C libft clean
-			@make -C minilibx clean
 
 fclean		:	clean
 			rm -f $(NAME)
 			@make -C libft fclean
+			@make -C minilibx clean
 
 re		:	fclean all
+
+.PHONY	:	clean fclean re all make_libs bonus

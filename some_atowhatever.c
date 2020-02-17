@@ -6,7 +6,7 @@
 /*   By: jgiron <jgiron@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 17:19:22 by jgiron            #+#    #+#             */
-/*   Updated: 2020/02/13 19:13:40 by jgiron           ###   ########.fr       */
+/*   Updated: 2020/02/16 18:29:09 by jgiron           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 /*
 **error protection OK :D
 */
+
+char		*ft_get_img_address(void *img_ptr, int bits_per_pixel,
+		int size_line, int endian)
+{
+	return (mlx_get_data_addr(img_ptr, &bits_per_pixel, &size_line, &endian));
+}
 
 int			ft_atocoord(t_coord *dst, char **line)
 {
@@ -92,6 +98,5 @@ double		ft_atof(char **str)
 		(*str)++;
 	if (b == 0)
 		return ((double)a);
-	b = (b / pow(10, floor(log10(b) + 1 + i)));
-	return ((a + b) * sign);
+	return ((a + (b / pow(10, floor(log10(b) + 1 + i)))) * sign);
 }

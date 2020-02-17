@@ -6,7 +6,7 @@
 /*   By: jgiron <jgiron@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 14:22:02 by jgiron            #+#    #+#             */
-/*   Updated: 2020/02/14 16:07:38 by jgiron           ###   ########.fr       */
+/*   Updated: 2020/02/16 18:41:53 by jgiron           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@
 # define ARG_ERR		3
 
 # define PRECISION	0.000001
-# define HUD_COLOR	INT32_MAX
+
+# ifndef HUD_COLOR
+#  define HUD_COLOR	0xf000f0
+# endif
 
 # define PLANE		1
 # define SPHERE		2
@@ -118,6 +121,12 @@ typedef struct	s_all_info
 	char		*program_name;
 }				t_all_info;
 
+typedef struct	s_cylinder
+{
+	double	root;
+	t_coord	result;
+}				t_cylinder;
+
 int				ft_atocoord(t_coord *dst, char **line);
 int				ft_atocolor(t_color *dst, char **line);
 double			ft_atof(char **str);
@@ -132,6 +141,11 @@ t_coord			ft_vector_rotation(t_coord vect, t_coord axe, double angle);
 double			ft_dist(t_coord a, t_coord b);
 double			ft_scalar(t_coord a, t_coord b);
 t_coord			ft_unit_vect(t_coord vect);
+double		ft_polynom_2(double a, double b, double c, int root);
+t_coord		ft_sphere_intersection(t_coord vect, t_coord origin,
+		t_mrt_list object);
+t_coord		ft_cylinder_intersection(t_coord vect, t_coord origin,
+										t_mrt_list object);
 t_coord			ft_intersection(t_coord vect, t_coord origin,
 															t_mrt_list object);
 t_color			ft_luminosity(t_all_info all_info, t_mrt_list current,
@@ -144,7 +158,7 @@ char			*ft_get_img_address(void *img_ptr, int bits_per_pixel,
 											int size_line, int endian);
 int				ft_keyboard_interaction(int keycode, t_all_info *all_info);
 char			*ft_find_file_name(char *path);
-void			ft_put_scene(t_all_info all_info, char *object_str);
+void			ft_put_scene(t_all_info all_info, char *object_str, char *arg);
 void			ft_zoom(t_all_info all_info, char *img_addr);
 void			ft_minirt(t_all_info all_info);
 int				ft_stereo(t_all_info all_info, t_pix pixel);
@@ -153,8 +167,12 @@ t_color			ft_pixel_calc(t_all_info all_info, t_pix pixel,
 														t_mrt_list *objects);
 t_color			ft_skysphere(t_all_info all_info, t_coord vect);
 void			ft_save_all_image(t_all_info all_info, int argc, char **argv);
+char			*ft_find_pathname(int argc, char **argv, int n,
+		t_all_info all_info);
 void			ft_save_image(t_all_info all_info, int argc, char **argv,
 																		int n);
-void			ft_quit(t_all_info all_info, int error);
+void		ft_rotation(int keycode, t_coord *vect);
+void		ft_translation(int keycode, t_coord *pos, t_coord vect);
+int			ft_quit(t_all_info all_info, int error);
 
 #endif

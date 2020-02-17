@@ -6,7 +6,7 @@
 /*   By: jgiron <jgiron@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/25 14:39:09 by jgiron            #+#    #+#             */
-/*   Updated: 2020/02/14 15:21:29 by jgiron           ###   ########.fr       */
+/*   Updated: 2020/02/16 18:44:29 by jgiron           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,19 @@ void	ft_put_hud(t_all_info all_info, char *object_str)
 			object_str);
 }
 
-void	ft_put_scene(t_all_info all_info, char *object_str)
+void	ft_put_scene(t_all_info all_info, char *object_str, char *arg)
 {
+	char	*tmp;
+
 	if (!object_str)
 		ft_quit(all_info, ERR_SYS);
 	if (!all_info.win_ptr)
+	{
 		all_info.win_ptr = mlx_new_window(all_info.mlx_ptr,
-all_info.scene_info.dim.i, all_info.scene_info.dim.j, all_info.program_name);
+all_info.scene_info.dim.i, all_info.scene_info.dim.j,
+tmp = ft_find_file_name(arg));
+		free(tmp);
+	}
 	ft_minirt(all_info);
 	mlx_put_image_to_window(all_info.mlx_ptr, all_info.win_ptr, all_info.img_ptr
 			, 0, 0);
