@@ -2,13 +2,13 @@ R 1000 1000
 A  0.8 255,255,255
 
 ### anti-aliasing (the square root of the number must be a multiple of 3):
-/aa 9
+aa 9
 
 ### camera:
 c -15,0,2    1,0,0   100
 
 ### skysphere (sk <luminosity> <path>):
-sk  1 /Users/jgiron/Documents/miniRT_r/42-miniRT/finland.png
+sk  1 /Users/jgiron/Documents/miniRT_r/skyspheres/finland.png
 
 sq 0,0,0 0,0,1 2 255,255,255
 tr 1,-1,0   1,1,0  0,0,2 255,0,0
